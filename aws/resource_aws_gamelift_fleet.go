@@ -44,6 +44,7 @@ func resourceAwsGameliftFleet() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
+				Default: "ON_DEMAND",
 			},
 			"name": {
 				Type:         schema.TypeString,
