@@ -40,6 +40,11 @@ func resourceAwsGameliftFleet() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
+			"fleet_type": {
+				Type:     schema.TypeString,
+				Optional: true,
+				ForceNew: true,
+			},
 			"name": {
 				Type:         schema.TypeString,
 				Required:     true,
@@ -184,6 +189,9 @@ func resourceAwsGameliftFleetCreate(d *schema.ResourceData, meta interface{}) er
 		Name:            aws.String(d.Get("name").(string)),
 	}
 
+	if v, ok := d.GetOk("fleet_type"); ok {
+		input.FleetType = aws.String(v.(string))
+	}
 	if v, ok := d.GetOk("description"); ok {
 		input.Description = aws.String(v.(string))
 	}
@@ -281,6 +289,7 @@ func resourceAwsGameliftFleetRead(d *schema.ResourceData, meta interface{}) erro
 	fleet := attributes[0]
 
 	d.Set("build_id", fleet.BuildId)
+	d.Set("fleet_type", fleet.FleetType)
 	d.Set("description", fleet.Description)
 	d.Set("arn", fleet.FleetArn)
 	d.Set("log_paths", aws.StringValueSlice(fleet.LogPaths))
